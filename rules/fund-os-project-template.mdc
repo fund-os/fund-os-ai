@@ -1,0 +1,88 @@
+---
+description: Fund OS microservice template — Maven, container contract, CI/CD catalog. Apply when scaffolding or editing deployable services.
+alwaysApply: true
+---
+
+# Fund OS Project Template
+
+You are a senior Java architect. Every new repo under the `fund-os` org must be a **Maven-buildable deployable microservice** that the CI/CD engine (`fund-os-ci-cd`) can build and Helm-install via `fund-os-deployments`.
+
+Reference implementation: `fund-os-ui-router`.
+
+## Catalog registration
+
+Add the service to `fund-os-deployments/deployable-services.txt`:
+
+```
+service-name:https://github.com/fund-os/service-name.git
+```
+
+Add a `services.<name>` block in the target env's `env-values.yml` (config keys match `${PLACEHOLDERS}` in the properties template). CI defaults: branch `main`, `Dockerfile`, `env-application.properties`.
+
+## Application contract (every catalog service)
+
+Three files at repo root. **No UAT/prod URLs in git.**
+
+### 1. `env-application.properties`
+
+Template with `${PLACEHOLDER}` vars only. Copied unchanged into the image. Helm renders substituted values into ConfigMap → mounted at `/app/config/env-application.properties`.
+
+```properties
+server.port=${SERVER_PORT}
+logging.level.root=${LOG_LEVEL}
+my.service.api-base-url=${API_BASE_URL}
+```
+
+Spring Boot: keys map to `@ConfigurationProperties` or standard Spring keys. Secrets belong in AWS Secrets Manager (mounted under `/app/secrets/<name>/`), not in this file.
+
+### 2. `entrypoint.sh`
+
+Container PID 1. Prefer Helm-mounted config; otherwise `envsubst` the template from process env (k8s env from `env-values.yml`).
+
+```sh
+#!/bin/sh
+set -eu
+MOUNTED="/app/config/env-application.properties"
+TEMPLATE="/app/env-application.properties"
+if [ -f "$MOUNTED" ]; then CONFIG="$MOUNTED"
+else envsubst < "$TEMPLATE" > /tmp/env-application.properties; CONFIG="/tmp/env-application.properties"; fi
+exec java ${JAVA_OPTS:-} -jar "${APP_JAR:-/app/service.jar}" --spring.config.additional-location="file:${CONFIG}"
+```
+
+### 3. `Dockerfile`
+
+Multi-stage so `deploy-release` (docker build only) produces a runnable image. No build-args for env-specific URLs.
+
+```dockerfile
+FROM eclipse-temurin:21-jdk-alpine AS build
+WORKDIR /build
+COPY pom.xml mvnw .mvn ./
+COPY src ./src
+RUN ./mvnw -DskipTests package
+
+FROM eclipse-temurin:21-jre-alpine
+RUN addgroup -S fundos && adduser -S fundos -G fundos && apk add --no-cache gettext
+WORKDIR /app
+COPY --from=build /build/target/<artifact>.jar /app/<artifact>.jar
+COPY env-application.properties entrypoint.sh /app/
+RUN chmod +x /app/entrypoint.sh && chown -R fundos:fundos /app
+USER fundos
+ENTRYPOINT ["/app/entrypoint.sh"]
+```
+
+## Maven (Java microservices)
+
+- Java **21**, Spring Boot **3.4.x**, `groupId` `com.fundos`, artifact matches repo name.
+- Include `mvnw`, `.mvn/wrapper/`, `pom.xml` with `spring-boot-maven-plugin`; `<finalName>` matches the JAR copied in Dockerfile.
+- `./mvnw verify` must pass locally before merge.
+
+## Angular frontends (`fund-os-ui` pattern)
+
+Non-JVM services still need the same contract. Replace `environment.ts` URLs with runtime config: keep `env-application.properties` + `entrypoint.sh`, and generate `env.js` (or equivalent) at container start from the mounted file or `envsubst`.
+
+## Checklist for new services
+
+- [ ] Maven wrapper + `./mvnw verify` green
+- [ ] `env-application.properties`, `entrypoint.sh`, `Dockerfile` at repo root
+- [ ] Entry in `deployable-services.txt` + `env-values.yml` for pilot env
+- [ ] K8s service name matches east-west DNS (e.g. `http://user-management:8080`)

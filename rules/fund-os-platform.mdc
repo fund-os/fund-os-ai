@@ -1,0 +1,16 @@
+---
+description: Fund OS platform — architecture, tenancy, BFF security. Always apply in this workspace.
+alwaysApply: true
+---
+
+# Fund OS
+
+Read `FUND-OS.md` (workspace root) before making changes.
+
+- UI: `fund-os-ui/Fund-os-ui.md` and `fund-os-ui/AGENTS.md`
+- BFF: `fund-os-ui-router/Fund-os-ui-router.md` and `fund-os-ui-router/AGENTS.md`
+- Agent rules source: `fund-os-ai/` ([github.com/fund-os/fund-os-ai](https://github.com/fund-os/fund-os-ai))
+
+The Angular app talks only to `/v1` (fund-os-ui-router). Do not add a catch-all proxy. Do not store JWTs in sessionStorage. Tenant is bound server-side (`POST /v1/tenants/select`). Downstream calls use Kubernetes service names `user-management` and `common-data` and must send `X-Tenant-Name` when a tenant is bound.
+
+Parent `fund-os` folder is not a git repo; commit inside the child repository you edited.
