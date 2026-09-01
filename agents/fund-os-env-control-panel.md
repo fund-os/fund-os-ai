@@ -27,6 +27,10 @@ After **create** or **start**, the workflow exports `cluster.yaml` (artifact + s
 
 `AWS_ROLE_ARN`, `TF_STATE_BUCKET`, `TF_LOCK_TABLE` only — no AWS access keys, no deployments PAT.
 
+## EKS node ops tools (SSM)
+
+Worker nodes bootstrap **kubectl**, **helm**, **aws CLI**, and **jq** via `cloudinit_post_nodeadm` (`templates/eks-node-ops.sh.tftpl`). Node IAM role includes `eks:DescribeCluster` for `aws eks update-kubeconfig`. Use SSM on a node, then `kubectl get nodes`.
+
 ## Container / app contract
 
 This repo is Terraform + scripts only. New **Java/Angular** services follow [`rules/fund-os-project-template.mdc`](../rules/fund-os-project-template.mdc) in their own repos.
