@@ -6,6 +6,9 @@ Then open the repo-specific doc for the area you are editing:
 
 - UI: `fund-os-ui/Fund-os-ui.md` and [`agents/fund-os-ui.md`](agents/fund-os-ui.md)
 - BFF: `fund-os-ui-router/Fund-os-ui-router.md` and [`agents/fund-os-ui-router.md`](agents/fund-os-ui-router.md)
+- Cluster lifecycle: [`agents/fund-os-env-control-panel.md`](agents/fund-os-env-control-panel.md)
+- Deploy engine: [`agents/fund-os-ci-cd.md`](agents/fund-os-ci-cd.md)
+- Environment config / deploy workflows: [`agents/fund-os-deployments.md`](agents/fund-os-deployments.md)
 
 Cursor rules for this org live in [`rules/`](rules/). Link them with [`scripts/link-workspace.sh`](scripts/link-workspace.sh).
 

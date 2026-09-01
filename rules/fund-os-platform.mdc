@@ -9,6 +9,8 @@ Read `FUND-OS.md` (workspace root) before making changes.
 
 - UI: `fund-os-ui/Fund-os-ui.md` and `fund-os-ui/AGENTS.md`
 - BFF: `fund-os-ui-router/Fund-os-ui-router.md` and `fund-os-ui-router/AGENTS.md`
+- Cluster: `fund-os-env-control-panel` — gateway ALB in Terraform; export `cluster.yaml` after create (manual copy to deployments)
+- Deploy: `fund-os-deployments` + `fund-os-ci-cd` — Helm deploy; `sync_gateway_alb` registers pod IPs on gateway ALB when `instance.yaml` `gateway.sync_after_deploy` is true
 - Agent rules source: `fund-os-ai/` ([github.com/fund-os/fund-os-ai](https://github.com/fund-os/fund-os-ai))
 
 The Angular app talks only to `/v1` (fund-os-ui-router). Do not add a catch-all proxy. Do not store JWTs in sessionStorage. Tenant is bound server-side (`POST /v1/tenants/select`). Downstream calls use Kubernetes service names `user-management` and `common-data` and must send `X-Tenant-Name` when a tenant is bound.
