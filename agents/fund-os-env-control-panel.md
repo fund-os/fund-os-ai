@@ -31,6 +31,16 @@ After **create** or **start**, the workflow exports `cluster.yaml` (artifact + s
 
 Worker nodes bootstrap **kubectl**, **helm**, **aws CLI**, and **jq** via `cloudinit_post_nodeadm` (`templates/eks-node-ops.sh.tftpl`). Node IAM role includes `eks:DescribeCluster` for `aws eks update-kubeconfig`. Use SSM on a node, then `kubectl get nodes`.
 
+## Destroy (zero stack spend)
+
+**destroy** and **create** (pre-apply) run:
+
+1. `scripts/pre-destroy-eks.sh` — uninstall app Helm releases, delete app namespace / ClusterSecretStore, wait for or force-delete LBC Ingress ALBs, delete unattached EBS volumes.
+2. `terraform destroy`
+3. `scripts/post-destroy-verify.sh` — fails if EKS, VPC, gateway/Ingress ALBs, S3 data bucket, MQ, or Postgres still exist.
+
+Does **not** delete ECR or account bootstrap (tfstate, OIDC).
+
 ## Container / app contract
 
 This repo is Terraform + scripts only. New **Java/Angular** services follow [`rules/fund-os-project-template.mdc`](../rules/fund-os-project-template.mdc) in their own repos.
