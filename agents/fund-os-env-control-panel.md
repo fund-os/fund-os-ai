@@ -41,6 +41,21 @@ Worker nodes bootstrap **kubectl**, **helm**, **aws CLI**, and **jq** via `cloud
 
 Does **not** delete ECR or account bootstrap (tfstate, OIDC).
 
+## Before every commit (required)
+
+Any change to `*.tf`, `*.tfvars`, or Terraform-related scripts must pass formatting **before** commit or push. CI runs `terraform fmt -check` on **create**; misformatted files fail immediately (exit code 3).
+
+From the repo root:
+
+```bash
+terraform fmt -recursive
+terraform fmt -check -recursive
+```
+
+If `terraform` is not on PATH locally, use the same version as CI (1.13.x). **Do not commit** until `fmt -check` is clean.
+
+Also run when editing only `.sh` files if you touched Terraform in the same change set.
+
 ## Container / app contract
 
 This repo is Terraform + scripts only. New **Java/Angular** services follow [`rules/fund-os-project-template.mdc`](../rules/fund-os-project-template.mdc) in their own repos.
