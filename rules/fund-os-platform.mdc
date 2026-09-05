@@ -10,6 +10,7 @@ Read `FUND-OS.md` (workspace root) before making changes.
 - UI: `fund-os-ui/Fund-os-ui.md` and `fund-os-ui/AGENTS.md`
 - BFF: `fund-os-ui-router/Fund-os-ui-router.md` and `fund-os-ui-router/AGENTS.md`
 - Cluster: `fund-os-env-control-panel` — gateway ALB in Terraform; export `cluster.yaml` after create (manual copy to deployments)
+- Laptop: `fund-os-local-env` — Rancher Desktop namespace `fundoslocal`; Helm values in `fund-os-deployments/environments/dev/local`; Loop C build via `./scripts/deploy-apps.sh` (not ECR / d1-deploy)
 - Deploy: `fund-os-deployments` + `fund-os-ci-cd` — Helm deploy; `sync_gateway_alb` registers pod IPs on gateway ALB when `instance.yaml` `gateway.sync_after_deploy` is true
 - Agent rules source: `fund-os-ai/` ([github.com/fund-os/fund-os-ai](https://github.com/fund-os/fund-os-ai))
 

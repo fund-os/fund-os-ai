@@ -17,6 +17,10 @@ environments/<tier>/<instance>/
 └── README.md
 ```
 
+## Laptop instance (`dev/local`)
+
+[`environments/dev/local`](https://github.com/fund-os/fund-os-deployments/blob/main/environments/dev/local) is Rancher Desktop (`fundoslocal`), not EKS. Lifecycle and Loop C image build are in `fund-os-local-env`. Do not run `d1-deploy` against that namespace. `gateway.sync_after_deploy` is false.
+
 ## cluster.yaml
 
 Source of truth for EKS `cluster_name`, `aws_region`, `kubernetes_namespace`, and `infrastructure.*` (VPC, `gateway_alb_dns`, target groups, node SG). Refreshed after Control Environment create/start — **commit manually** to this repo.

@@ -11,7 +11,8 @@ fund-os/                      # workspace root (not a git repo)
 ├── fund-os-ui-router/
 ├── fund-os-ci-cd/
 ├── fund-os-deployments/
-└── fund-os-env-control-panel/
+├── fund-os-env-control-panel/
+└── fund-os-local-env/
 ```
 
 ## 2. Link Cursor rules

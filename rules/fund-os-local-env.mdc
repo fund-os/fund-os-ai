@@ -1,0 +1,18 @@
+---
+description: Rancher Desktop local stack (fundoslocal) — never mix with AWS d1.
+globs: fund-os-local-env/**
+alwaysApply: false
+---
+
+# fund-os-local-env
+
+Laptop Rancher Desktop only. Namespace **`fundoslocal`**. Not a catalog microservice.
+
+- Helm values: `fund-os-deployments/environments/dev/local/`
+- Chart / `render_helm_values.py`: `fund-os-ci-cd`
+- Loop C build: `./scripts/deploy-apps.sh` (local images, `imagePullPolicy: Never`, Traefik `fundos.local`)
+- Destroy: `CONFIRM=fundoslocal ./scripts/destroy.sh`
+
+Do not run `d1-deploy`, ECR push, or `aws eks update-kubeconfig`. Do not Helm-install into `fundosd1`. `./mvnw package` does not update Helm pods.
+
+Canonical: [`agents/fund-os-local-env.md`](../agents/fund-os-local-env.md)

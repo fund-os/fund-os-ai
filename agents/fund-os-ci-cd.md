@@ -12,7 +12,7 @@ Pin callers at a **semver tag** (e.g. `v0.1.11`); bump tag when workflow or scri
 
 1. Checks out `fund-os-deployments` for `env-values.yml`, `instance.yaml`, `cluster.yaml`
 2. Builds/pushes ECR images, `helm upgrade` per catalog service
-3. **`render_helm_values.py`**: with `instance.yaml` `gateway.host_from_cluster: true`, sets `ingressHost` / `UI_ORIGIN` from `cluster.yaml` `gateway_alb_dns`
+3. **`render_helm_values.py`**: with `instance.yaml` `gateway.host_from_cluster: true`, sets `ingressHost` / `UI_ORIGIN` from `cluster.yaml` `gateway_alb_dns`. `helm.ingressClassName` defaults to `alb` (ALB annotations); laptop Traefik uses `traefik` and skips those annotations. Optional `helm.imagePullPolicy` (local: `Never`).
 4. **`sync_gateway_alb.py`**: copies Ingress pod IPs to Terraform gateway target groups; reads names from `cluster.yaml`; skips listener changes when `gateway.listener_managed_by: terraform` or `gateway_listener_managed_by: terraform` in cluster
 
 ## Scripts

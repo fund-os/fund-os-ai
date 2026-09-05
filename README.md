@@ -38,6 +38,7 @@ Add `fund-os-ai` to your Cursor workspace file if you want the rules editable in
 | fund-os-ui | [`agents/fund-os-ui.md`](agents/fund-os-ui.md) |
 | fund-os-ui-router | [`agents/fund-os-ui-router.md`](agents/fund-os-ui-router.md) |
 | fund-os-env-control-panel | [`agents/fund-os-env-control-panel.md`](agents/fund-os-env-control-panel.md) |
+| fund-os-local-env | [`agents/fund-os-local-env.md`](agents/fund-os-local-env.md) |
 | fund-os-ci-cd | [`agents/fund-os-ci-cd.md`](agents/fund-os-ci-cd.md) |
 | fund-os-deployments | [`agents/fund-os-deployments.md`](agents/fund-os-deployments.md) |
 

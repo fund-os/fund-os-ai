@@ -4,6 +4,7 @@ Add organisation-specific Cursor skills here as subfolders, each containing a `S
 
 ```
 skills/
+  local-env-build/SKILL.md
   fund-os-deploy/SKILL.md
   fund-os-tenancy/SKILL.md
 ```
