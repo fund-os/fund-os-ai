@@ -12,7 +12,10 @@ fund-os/                      # workspace root (not a git repo)
 ├── fund-os-ci-cd/
 ├── fund-os-deployments/
 ├── fund-os-env-control-panel/
-└── fund-os-local-env/
+├── fund-os-local-env/
+├── fund-os-microservice/     # GitHub template (not catalogued)
+├── fund-os-dashboard/
+└── fund-os-common-data/
 ```
 
 ## 2. Link Cursor rules

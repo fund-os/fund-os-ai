@@ -5,8 +5,7 @@ Add organisation-specific Cursor skills here as subfolders, each containing a `S
 ```
 skills/
   local-env-build/SKILL.md
-  fund-os-deploy/SKILL.md
-  fund-os-tenancy/SKILL.md
+  new-db-microservice/SKILL.md
 ```
 
 Skills in this repo are **Fund OS–specific**. Global Cursor skills (create-rule, create-skill, etc.) remain under your user profile (`~/.cursor/skills-cursor/`).
